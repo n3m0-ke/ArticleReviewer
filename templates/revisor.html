@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container">
+		<a class="navbar-brand font-weight-bold" href="#">Article Revisor Section</a>
+	</div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>		
+	</nav>
+
+	<div class="container">
+		<form method="POST" action="/app/preview/">
+		{% csrf_token %}
+			<div class="form-group">
+				<label class="font-weight-bold mt-3" for="FormControlTextarea">Paste an existing article in the textbox below</label>
+				<textarea dir="rtl" lang="ar" class="form-control" id="FormControlTextarea" rows="10" name="article"></textarea>
+				<a onclick="paste()" class="btn btn-secondary mt-3 text-light" style="width: 100%;">Paste from clipboard</a>
+				<div class="d-flex justify-content-center">
+					<button type="submit" class="btn btn-secondary mt-3">Parse article >></button>  
+					<a class="btn btn-secondary mt-3 ml-5 text-light" onclick="#">Exit</a>
+				</div>				
+			</div>
+		</form>
+		<script>
+			async function paste() {
+				const text = await navigator.clipboard.readText();
+				document.getElementById('FormControlTextarea').value = text;
+			}
+		</script>
+	</div>
+{% endblock %}

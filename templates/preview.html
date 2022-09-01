@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container">
+		<a class="navbar-brand font-weight-bold" href="#">Rewrite article</a>
+	</div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>	
+	</nav>
+
+	<div class="container">
+		<form method="POST" action="/app/rewrite/">
+		{% csrf_token %}
+			<div class="form-group" >
+				<label class="font-weight-bold mt-3" for="exampleFormControlTextarea1">
+					Simply rewrite each sentence in your own words. The original article contains {{num_words}} words
+				</label>
+
+				{% if paragraphs %}
+				{% for key,value in paragraphs.items %}
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input type="checkbox" aria-label="Checkbox for following text input">
+							</div>
+						</div>
+						<label class="ml-4" for="exampleFormControlTextarea1">
+							Begin new paragraph
+						</label>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-sm-12">
+							<input dir="rtl" lang="ar" type="text" style="width: 100%;" readonly class="" id="staticEmail" value="{{ value }}">
+						</div>
+					</div>
+					<textarea dir="rtl" lang="ar" name="{{ key }}" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+
+					<hr>
+				{% endfor %}				
+				{% else %}
+				<>No paragraphs were detected</>
+				{% endif %}
+
+				<div class="d-flex justify-content-center">
+					<button type="submit" class="btn btn-secondary mt-3 ">Compose article >></button>  
+					<a class="btn btn-secondary mt-3 ml-5 text-light" href="{% url 'index' %}">Exit</a>
+				</div>				
+			</div>
+		</form>
+		
+	</div>
+	{% endblock %}

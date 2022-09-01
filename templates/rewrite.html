@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container">
+		<a class="navbar-brand font-weight-bold" href="#">Preview article</a>
+	</div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>	
+	</nav>
+
+	<div class="container mt-3">
+		<form>
+			<div class="form-group">
+				<label class="font-weight-bold" for="FormControlTextarea">
+					Your article contains {{num_words}} words
+				</label>
+				{% for key,value in word_dict.items %}
+					<input type="hidden" class="word_dict"  name="{{ value }}" value="{{ key }}" />
+				{% endfor %}
+
+				<textarea dir="rtl" lang="ar" class="form-control" id="FormControlTextarea" rows="10" placeholder="">{{ article }}</textarea>
+				<div class="container-fluid">
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th scope="col">Word</th>
+								<th scope="col">Number of occurrences</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for key,value in word_dict.items %}
+							<tr>
+								<th scope="row">{{ key }}</th>
+								<td>{{ value }}</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="d-flex justify-content-center">
+					<a class="btn btn-secondary mt-3 text-light" onclick="window.history.go(-1)"> << Back </a>
+					<a class="btn btn-secondary mt-3 ml-2 text-light" onclick="copyToClipboard()">Copy to clipboard</a>  
+					<a class="btn btn-secondary mt-3 ml-2 text-light" onclick="generateFile()">Save to file</a>
+				</div>				
+			</div>
+		</form>
+		<script>
+		async function copyToClipboard(){
+			var text = document.getElementById('FormControlTextarea').value;
+			navigator.clipboard.writeText(text).then(function() {
+			console.log('Async: Copying to clipboard was successful!');
+			}, function(err) {
+			console.error('Async: Could not copy text: ', err);
+			});
+		}
+		</script>
+	</div>
+{% endblock %}
